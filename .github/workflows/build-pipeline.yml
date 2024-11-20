@@ -48,7 +48,6 @@
 #         name: awesome-calculator
 #         path: src/dist    
 
-
 name: Awesome Calculator CI build
 
 on:
@@ -99,11 +98,15 @@ jobs:
           python -m pip install --user --upgrade build
           python -m build
 
+      - name: Verify .whl file
+        run: |
+          ls -R src/dist
+
       - name: Archive package
         uses: actions/upload-artifact@v4
         with:
           name: awesome-calculator
-          path: src/dist/
+          path: src/dist/*
 
   install-package:
     runs-on: ubuntu-latest
@@ -117,7 +120,11 @@ jobs:
         with:
           name: awesome-calculator
 
+      - name: Verify downloaded artifact
+        run: |
+          ls -R src/dist
+
       - name: Install package
         run: |
           python -m pip install --upgrade pip
-          pip install src/dist/dedreira_awesomecalculator-1.0.0-py3-none-any.whl
+          pip install src/dist/*.whl
